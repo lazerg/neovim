@@ -2968,3 +2968,30 @@ it("'inccommand' :substitute preview skips input() prompt #11940", function()
     :s/f/\=input("sub: ")^         |
   ]])
 end)
+
+it(':substitute with inccommand previews whole range when replacement adds lines #42781', function()
+  clear()
+  local screen = Screen.new(30, 20)
+  common_setup(screen, 'nosplit', 'a\nb\nc\nd\ne\nf\ng\nh')
+  feed(':%s/$/x\\ry')
+  screen:expect([[
+    a{20:x}                            |
+    {20:y}                             |
+    b{20:x}                            |
+    {20:y}                             |
+    c{20:x}                            |
+    {20:y}                             |
+    d{20:x}                            |
+    {20:y}                             |
+    e{20:x}                            |
+    {20:y}                             |
+    f{20:x}                            |
+    {20:y}                             |
+    g{20:x}                            |
+    {20:y}                             |
+    h{20:x}                            |
+    {20:y}                             |
+    {1:~                             }|*3
+    :%s/$/x\ry^                    |
+  ]])
+end)

@@ -3776,7 +3776,7 @@ static int do_sub(exarg_T *eap, proftime_T tm, const int cmdpreview_ns,
   for (linenr_T lnum = eap->line1;
        lnum <= line2 && !got_quit && !timed_out && !aborting()
        && (cmdpreview_ns <= 0 || preview_lines.lines_needed <= (linenr_T)p_cwh
-           || lnum <= curwin->w_botline);
+           || lnum <= curwin->w_botline || curwin->w_botline > old_line_count);
        lnum++) {
     int nmatch = vim_regexec_multi(&regmatch, curwin, curbuf, lnum,
                                    0, &tm, &timed_out);
